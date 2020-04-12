@@ -1,0 +1,99 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-analytics.js"></script>
+
+</head>
+
+<body>
+
+    <h1>Book</h1>
+    <input placeholder="title" id="title" type="text">
+    <input placeholder="name surname" id="author" type="text">
+    <input placeholder="Type" id="type" type="text">
+    <input placeholder="Year" id="year" type="text">
+    <input placeholder="ISBN" id="isbn" type="text">
+    <button id="loadButton">Load</button>
+    <button id="saveButton">Save</button>
+
+    <div type=" textfield" id="textField"> </div>
+
+    <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyAYvGmQCEtzR3kpgacA35sJThQe5z8ckJ0",
+            authDomain: "zadanie-psm-42dab.firebaseapp.com",
+            databaseURL: "https://zadanie-psm-42dab.firebaseio.com",
+            projectId: "zadanie-psm-42dab",
+            storageBucket: "zadanie-psm-42dab.appspot.com",
+            messagingSenderId: "723097338061",
+            appId: "1:723097338061:web:d475312d3266ed9c806984",
+            measurementId: "G-822NCRKX3B"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+        let firestore = firebase.firestore();
+
+
+        const docRef = firestore.doc("books/book");
+        const inputField = document.querySelector("#textField");
+        const loadButton = document.querySelector("#loadButton");
+        const saveButton = document.querySelector("#saveButton");
+
+
+        saveButton.addEventListener("click", function () {
+            docRef.get().then(function (doc) {
+                if (doc && doc.exists) {
+                    let title = document.getElementById("title").value;
+                    let author = document.getElementById("author").value;
+                    let type = document.getElementById("type").value;
+                    let year = document.getElementById("year").value;
+                    let isbn = document.getElementById("isbn").value;
+
+                    console.log(title, author, type, year, isbn);
+                    docRef.set({
+                        ISBN: isbn,
+                        Title: title,
+                        author: author,
+                        Year: year
+                    });
+
+                }
+            }).catch(function (error) {
+                console.log("error: ", error)
+            })
+        })
+
+        loadButton.addEventListener("click", function () {
+            docRef.get().then(function (doc) {
+                if (doc && doc.exists) {
+                    const myData = doc.data()
+                    console.log(myData)
+                    const textDiv = document.getElementById("textField");
+                    const breakLine = document.createElement("br")
+                    let title = document.createTextNode
+                    textDiv.append(myData.Title, ' ', myData.Year, ' ', myData.nameSurname, ' ', myData.ISBN, breakLine);
+
+                }
+            }).catch(function (error) {
+                console.log("error: ", error)
+            })
+        })
+
+
+    </script>
+
+    <style>
+        input {
+            display: block;
+        }
+    </style>
+</body>
+
+</html>

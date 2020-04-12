@@ -1,0 +1,59 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-analytics.js"></script>
+
+</head>
+
+<body>
+
+    <h1>Book</h1>
+    <button id="loadButton">Load</button>
+    <div type="textfield" id="textField"> </div>
+
+    <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyAYvGmQCEtzR3kpgacA35sJThQe5z8ckJ0",
+            authDomain: "zadanie-psm-42dab.firebaseapp.com",
+            databaseURL: "https://zadanie-psm-42dab.firebaseio.com",
+            projectId: "zadanie-psm-42dab",
+            storageBucket: "zadanie-psm-42dab.appspot.com",
+            messagingSenderId: "723097338061",
+            appId: "1:723097338061:web:d475312d3266ed9c806984",
+            measurementId: "G-822NCRKX3B"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+        let firestore = firebase.firestore();
+
+
+        const docRef = firestore.doc("books/book");
+        const inputField = document.querySelector("#textField");
+        const loadButton = document.querySelector("#loadButton");
+
+
+        loadButton.addEventListener("click", function () {
+            docRef.get().then(function (doc) {
+                if (doc && doc.exists) {
+                    const myData = doc.data()
+                    console.log(myData)
+                    const textDiv = document.getElementById("textField");
+                    let title = document.createTextNode
+                    textDiv.append(myData.Title, ' ', myData.Year, ' ', myData.nameSurname, ' ', myData.ISBN);
+
+                }
+            }).catch(function (error) {
+                console.log("error: ", error)
+            })
+        })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,71 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-analytics.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+</head>
+
+<body>
+
+    <h1>Book</h1>
+    <button id="loadButton">Load</button>
+
+    <table id="table"></table>
+    <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyAYvGmQCEtzR3kpgacA35sJThQe5z8ckJ0",
+            authDomain: "zadanie-psm-42dab.firebaseapp.com",
+            databaseURL: "https://zadanie-psm-42dab.firebaseio.com",
+            projectId: "zadanie-psm-42dab",
+            storageBucket: "zadanie-psm-42dab.appspot.com",
+            messagingSenderId: "723097338061",
+            appId: "1:723097338061:web:d475312d3266ed9c806984",
+            measurementId: "G-822NCRKX3B"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        firebase.analytics();
+        let firestore = firebase.firestore();
+
+        const loadButton = document.querySelector("#loadButton");
+        const table = document.getElementById("table")
+
+        loadButton.addEventListener("click", function () {
+            firestore.collection("persons").get()
+                .then(function (querySnapshot) {
+                    querySnapshot.forEach(function (doc) {
+                        let email = doc.data().email
+                        let first_name = doc.data().first_name
+                        let gender = doc.data().gender
+                        let id = doc.data().id
+                        let last_name = doc.data().last_name
+                        $(table).append(`
+                            <tr><td>${id}</td>
+                            <td>${gender}</td>
+                            <td>${email}</td>
+                            <td>${first_name}</td>
+                            <td>${last_name}</td></tr>`);
+
+                    });
+                });
+        })
+
+
+
+    </script>
+
+    <style>
+        input {
+            display: block;
+        }
+    </style>
+</body>
+
+</html>
